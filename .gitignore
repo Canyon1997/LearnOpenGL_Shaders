@@ -33,3 +33,5 @@
 
 x64
 Shaders.vcxproj
+Shaders.vcxproj.filters
+Shaders.vcxproj.user
