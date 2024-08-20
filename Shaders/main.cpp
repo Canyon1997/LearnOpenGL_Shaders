@@ -56,6 +56,12 @@ int main()
 		//render
 		glUseProgram(ShaderProgram);
 
+		//set uniform value on fragement shader to change color over time each frame
+		float timeValue = glfwGetTime();
+		float pinkColor = (sin(timeValue) / 2.0f) + 0.5f;
+		int vertexColorLocation = glGetUniformLocation(ShaderProgram, "ourColor");
+		glUniform4f(vertexColorLocation, pinkColor, 0.4f, 0.7f, 1.0f);
+
 		//Bind VAO 1
 		glBindVertexArray(VAO[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
