@@ -3,23 +3,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// TODO: Do shader exercises
+
 int main()
 {
 	GLFWwindow* window = InitializeOpenGL();
 
 	Shader shader("Shaders\\VertexShader1.glsl", "Shaders\\FragmentShader1.glsl");
+	Shader offsetShader("Shaders\\VertexOffsetShader.glsl", "Shaders\\FragmentShader1.glsl");
 
 	float Triangle1[] = {
 		// Vertices         // Colors
-		-1.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Right
-		-0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Bottom Left
-		0.0f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Top
+		-1.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Right
+		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Bottom Left
+		0.0f, 0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Top
 	};
 
 	float Triangle2[] = {
-		1.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
 	};
 
 	unsigned int VAO[2];
@@ -46,6 +49,8 @@ int main()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
+	
+
 	glViewport(0, 0, 800, 600);
 
 	while (!glfwWindowShouldClose(window))
@@ -59,20 +64,20 @@ int main()
 		//render
 		glUseProgram(shader.ID);
 
-		//set uniform value on fragement shader to change color over time each frame
-		float timeValue = glfwGetTime();
-		float pinkColor = sin(timeValue);
-		int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
-		glUniform4f(vertexColorLocation, pinkColor, 0.4f, 0.7f, 1.0f);
 
 		//Bind VAO 1
 		glBindVertexArray(VAO[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		
+		glUseProgram(offsetShader.ID);
+
+		offsetShader.setFloat("xOffset", 0.5f);
+
 		//Bind VAO2
 		glBindVertexArray(VAO[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-
+		
 		//Swap color buffer and shows output to screen
 		glfwSwapBuffers(window);
 
