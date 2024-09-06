@@ -10,7 +10,7 @@ int main()
 	GLFWwindow* window = InitializeOpenGL();
 
 	Shader shader("Shaders\\VertexShader1.glsl", "Shaders\\FragmentShader1.glsl");
-	Shader offsetShader("Shaders\\VertexOffsetShader.glsl", "Shaders\\FragmentShader1.glsl");
+	Shader offsetShader("Shaders\\VertexOffsetShader.glsl", "Shaders\\FragmentOffsetShader.glsl");
 
 	float Triangle1[] = {
 		// Vertices         // Colors
@@ -20,9 +20,9 @@ int main()
 	};
 
 	float Triangle2[] = {
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+		1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+		0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f
 	};
 
 	unsigned int VAO[2];
@@ -48,6 +48,7 @@ int main()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	
 
 	
 
@@ -62,7 +63,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//render
-		glUseProgram(shader.ID);
+		shader.Use();
 
 
 		//Bind VAO 1
@@ -70,9 +71,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		
-		glUseProgram(offsetShader.ID);
-
-		offsetShader.setFloat("xOffset", 0.5f);
+		offsetShader.Use();
 
 		//Bind VAO2
 		glBindVertexArray(VAO[1]);
